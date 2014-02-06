@@ -304,9 +304,10 @@ mkdir -p ~/.ssh
 nova boot --poll --flavor $NOVA_FLAVOR --image $imgid --key_name testkey testvm | tee boot.out
 instanceid=`perl -ne 'm/ id [ |]*([0-9a-f-]+)/ && print $1' boot.out`
 nova list
+vmip=`neutron floatingip-create ext | perl -ne 'm/floating_ip_address\D*(\d+\.\d+\.\d+\.\d+)/ && print $1'`
+nova add-floating-ip testvm $vmip
 sleep 30
 . /etc/openstackquickstartrc
-vmip=`nova show testvm|perl -ne 'm/network\D*(\d+\.\d+\.\d+\.\d+)/ && print $1'`
 echo "VM IP: $vmip"
 if [ -n "$vmip" ]; then
     ping -c 2 $vmip || true
