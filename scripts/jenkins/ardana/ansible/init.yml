@@ -222,7 +222,8 @@
   - name: Run tempest
     shell: |
       ansible-playbook -vvv -i hosts/verb_hosts tempest-run.yml \
-                       -e run_filter="{{ tempest_run_filter }}"
+                       -e run_filter="{{ tempest_run_filter }}" \
+                       -e ssh_timeout=600
     args:
       chdir: /var/lib/ardana/scratch/ansible/next/ardana/ansible
     become: true
